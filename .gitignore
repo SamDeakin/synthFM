@@ -1,0 +1,5 @@
+# Build files
+Builds/MacOSX/build/*
+
+# User state files
+Builds/MacOSX/synthFM.xcodeproj/project.xcworkspace/xcuserdata/*

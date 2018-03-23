@@ -10,6 +10,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#include "Synth.h"
+
 //==============================================================================
 /*
     This component lives inside our window, and this is where you should put all
@@ -47,6 +49,8 @@ private:
      * The time should be divided by the sample rate to get the time in seconds.
      */
     unsigned time;
+
+    Synth synth;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

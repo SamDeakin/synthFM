@@ -11,7 +11,7 @@
 #include <iostream>
 
 //==============================================================================
-MainComponent::MainComponent()
+MainComponent::MainComponent() : synth(), time(0)
 {
     // Make sure you set the size of the component after
     // you add any child components.
@@ -41,15 +41,20 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
 
 void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill)
 {
-    // Your audio-processing code goes here!
+    int start = bufferToFill.startSample;
+    int samples = bufferToFill.numSamples;
 
-    // For more details, see the help for AudioProcessor::getNextAudioBlock()
+    float* ptr = bufferToFill.buffer->getWritePointer(0, start);
 
-    // Right now we are not producing any data, in which case we need to clear the buffer
-    // (to prevent the output of random noise)
-    bufferToFill.clearActiveBufferRegion();
+    synth.fill(440.0, time, samples, inverseSampleRate, nullptr, ptr);
+
+    // Duplicate into the other ear
+    float* other = bufferToFill.buffer->getWritePointer(1, start);
+    for (int i = 0; i < samples; i++) {
+        other[i] = ptr[i];
+    }
+
     time += bufferToFill.numSamples;
-    std::cout << bufferToFill.startSample << " " << bufferToFill.numSamples << " " << time << std::endl;
 }
 
 void MainComponent::releaseResources()
