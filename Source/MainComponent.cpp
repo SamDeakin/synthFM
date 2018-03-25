@@ -16,26 +16,38 @@ MainComponent::MainComponent() : time(0), synth()
     // TODO Get the current configs from synth and use them to set initial values
     // for the labels.
 
+    std::function<void(void)> matrixFn = std::bind(&MainComponent::matrixChanged, this);
+    std::function<void(void)> singleGainChanged = std::bind(&MainComponent::singleGainChanged, this);
+
     for (int i = 0; i < 4; i++) {
+        std::function<void(void)> opChanged = [this, i]() {
+            this->operatorSettingsChanged(i);
+        };
+
         for (int j = 0; j < 4; j++) {
             alphaSliders[i][j].setColour(Slider::textBoxOutlineColourId, Colours::blue);
             addAndMakeVisible(alphaSliders[i][j]);
+            alphaSliders[i][j].onValueChange = matrixFn;
         }
 
         amplitudeSliders[i].setColour(Slider::textBoxOutlineColourId, Colours::teal);
         addAndMakeVisible(amplitudeSliders[i]);
+        amplitudeSliders[i].onValueChange = opChanged;
 
         freqMultLabels[i].setColour(Label::outlineColourId, Colours::blanchedalmond);
         freqMultLabels[i].setEditable(true);
         freqMultLabels[i].setText("1.0", NotificationType::dontSendNotification);
         addAndMakeVisible(freqMultLabels[i]);
+        freqMultLabels[i].onTextChange = opChanged;
 
         freqOffsetLabels[i].setColour(Label::outlineColourId, Colours::fuchsia);
         freqOffsetLabels[i].setEditable(true);
         freqOffsetLabels[i].setText("0.0", NotificationType::dontSendNotification);
         addAndMakeVisible(freqOffsetLabels[i]);
+        freqOffsetLabels[i].onTextChange = opChanged;
 
         addAndMakeVisible(singleGainSliders[i]);
+        singleGainSliders[i].onValueChange = singleGainChanged;
     }
 
     synthMatrixHeader.setText("Synth Matrix", NotificationType::dontSendNotification);
@@ -169,4 +181,34 @@ void MainComponent::resized()
             singleGainSliders[i].setBounds(gainArea.removeFromTop(50));
         }
     }
+}
+
+void MainComponent::matrixChanged() {
+    std::cout << "matChange" << std::endl;
+    Synth::Config conf = synth.getConfig();
+
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            conf.alpha[i][j] = alphaSliders[i][j].getValue();
+        }
+    }
+
+    synth.setConfig(conf);
+}
+
+void MainComponent::operatorSettingsChanged(Synth::OpRef op) {
+    std::cout << "opChange" << std::endl;
+
+    // TODO Check the labels, and reset them if they no longer convert to a number.
+}
+
+void MainComponent::singleGainChanged() {
+    std::cout << "gainChange" << std::endl;
+    Synth::Config conf = synth.getConfig();
+
+    for (int i = 0; i < 4; i++) {
+        conf.out[i] = singleGainSliders[i].getValue();
+    }
+
+    synth.setConfig(conf);
 }

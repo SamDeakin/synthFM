@@ -52,7 +52,7 @@ public:
     /*
      * Get and set the internal configuration
      */
-    void setConfig(OpRef op, const Config& config);
+    void setConfig(const Config& config);
     Config getConfig();
 
 private:

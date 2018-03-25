@@ -82,3 +82,20 @@ void Synth::callOperator(OpRef opNum,
         }
     }
 }
+
+void Synth::SetOperatorConfig(OpRef op, const Operator::Options& config) {
+    // Direct copy-assignment
+    opConfigs[op] = config;
+}
+
+Operator::Options Synth::getOperatorConfig(OpRef op) {
+    return opConfigs[op];
+}
+
+void Synth::setConfig(const Config& config) {
+    this->config  = config;
+}
+
+Synth::Config Synth::getConfig() {
+    return config;
+}
