@@ -52,5 +52,36 @@ private:
 
     Synth synth;
 
+    // Visual Components
+
+    // Labels for adjusting the synth settings
+    Slider alphaSliders[4][4];
+    Label synthMatrixHeader;
+
+    Slider amplitudeSliders[4];
+    Label amplitudeHeader;
+
+    Label freqMultLabels[4];
+    Label freqOffsetLabels[4];
+    Label freqHeader;
+
+    Slider singleGainSliders[4];
+    Label singleGainHeader;
+
+    // Labels for adjusting the envelope
+    // TODO Unimplemented
+
+    // Graph gui elements
+
+    // Volume slider
+    Slider gainSlider;
+    // TODO Need label for header?
+
+    // Piano gui elements
+    // TODO Unimplemented
+
+    // Buttons for selecting presets
+    // TODO Unimplemented
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
