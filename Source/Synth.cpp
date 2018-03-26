@@ -30,12 +30,22 @@ void Synth::fill(float freq,
     float intermediate[4][samples];
 
     // Calculate the output values in reverse order
-    for (OpRef i = 0; i >= 0; i--) { // TODO all 4 not just 0
+    for (OpRef i = 3; i >= 0; i--) {
         // Calculate the input modulation
-        // TODO
+        float modulation[samples];
+        for (size_t j = 0; j < samples; j++) {
+            modulation[j] = 0;
+        }
+
+        for (OpRef j = 3; j > i; j--) {
+            for (size_t k = 0; k < samples; k++) {
+                // lol up to k
+                modulation[k] += config.alpha[i][j] * intermediate[j][k];
+            }
+        }
 
         // Fill the intermediate buffer with the operator output
-        callOperator(i, freq, start, samples, sampleDistance, nullptr, intermediate[i]);
+        callOperator(i, freq, start, samples, sampleDistance, modulation, intermediate[i]);
     }
 
     // Mix outputs together
