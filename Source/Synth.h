@@ -10,17 +10,6 @@ public:
     // An external reference to an operator.
     typedef int OpRef;
 
-    struct Config {
-        // We only really use just over half of this.
-        // Modulation weights of the operators.
-        float alpha[4][4];
-
-        // The output weights of the operators.
-        float out[4];
-
-        size_t feedbackIterations;
-    };
-
     /*
      * TODO args?
      */
@@ -46,21 +35,39 @@ public:
     /*
      * Get and set the configuration for a single operator
      */
-    void SetOperatorConfig(OpRef op, const Operator::Options& config);
-    Operator::Options getOperatorConfig(OpRef op);
+    void setAmplitude(OpRef op, float amp);
+    float getAmplitude(OpRef op);
+    void setFreqOffset(OpRef op, float offset);
+    float getFreqOffset(OpRef op);
+    void setFreqMult(OpRef op, float mult);
+    float getFreqMult(OpRef op);
 
     /*
      * Get and set the internal configuration
      */
-    void setConfig(const Config& config);
-    Config getConfig();
-
+    void setAlpha(OpRef x, OpRef y, float alpha);
+    float getAlpha(OpRef x, OpRef y);
+    void setGain(OpRef op, float gain);
+    float getGain(OpRef op);
+    void setFeedbackIterations(size_t iters);
+    size_t getFeedbackIterations();
 private:
     // The configuration values for the operators
     Operator::Options opConfigs[4];
 
     // The four managed operators
     Operator ops[4];
+
+    struct Config {
+        // We only really use just over half of this.
+        // Modulation weights of the operators.
+        float alpha[4][4];
+
+        // The output weights of the operators.
+        float out[4];
+
+        size_t feedbackIterations;
+    };
 
     Config config;
 

@@ -33,12 +33,13 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
 
-    // Callbacks for changing GUI fields
-    void matrixChanged();
-    void operatorSettingsChanged(Synth::OpRef op);
-    void singleGainChanged();
-
 private:
+    /*
+     *
+     */
+    float getFrequencyMultFromLabel(Synth::OpRef op);
+    float getFrequencyOffsetFromLabel(Synth::OpRef op);
+
     int samplesPerBlock;
     float sampleRate;
 

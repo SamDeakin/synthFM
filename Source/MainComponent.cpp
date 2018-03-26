@@ -16,38 +16,41 @@ MainComponent::MainComponent() : time(0), synth()
     // TODO Get the current configs from synth and use them to set initial values
     // for the labels.
 
-    std::function<void(void)> matrixFn = std::bind(&MainComponent::matrixChanged, this);
-    std::function<void(void)> singleGainChanged = std::bind(&MainComponent::singleGainChanged, this);
-
     for (int i = 0; i < 4; i++) {
-        std::function<void(void)> opChanged = [this, i]() {
-            this->operatorSettingsChanged(i);
-        };
-
         for (int j = 0; j < 4; j++) {
             alphaSliders[i][j].setColour(Slider::textBoxOutlineColourId, Colours::blue);
             addAndMakeVisible(alphaSliders[i][j]);
-            alphaSliders[i][j].onValueChange = matrixFn;
+            alphaSliders[i][j].onValueChange = [this, i, j]() {
+                this->synth.setAlpha(i, j, this->alphaSliders[i][j].getValue());
+            };
         }
 
         amplitudeSliders[i].setColour(Slider::textBoxOutlineColourId, Colours::teal);
         addAndMakeVisible(amplitudeSliders[i]);
-        amplitudeSliders[i].onValueChange = opChanged;
+        amplitudeSliders[i].onValueChange = [this, i]() {
+            this->synth.setAmplitude(i, this->amplitudeSliders[i].getValue());
+        };
 
         freqMultLabels[i].setColour(Label::outlineColourId, Colours::blanchedalmond);
         freqMultLabels[i].setEditable(true);
         freqMultLabels[i].setText("1.0", NotificationType::dontSendNotification);
         addAndMakeVisible(freqMultLabels[i]);
-        freqMultLabels[i].onTextChange = opChanged;
+        freqMultLabels[i].onTextChange = [this, i]() {
+            this->synth.setFreqMult(i, this->getFrequencyMultFromLabel(i));
+        };
 
         freqOffsetLabels[i].setColour(Label::outlineColourId, Colours::fuchsia);
         freqOffsetLabels[i].setEditable(true);
         freqOffsetLabels[i].setText("0.0", NotificationType::dontSendNotification);
         addAndMakeVisible(freqOffsetLabels[i]);
-        freqOffsetLabels[i].onTextChange = opChanged;
+        freqOffsetLabels[i].onTextChange = [this, i]() {
+            this->synth.setFreqOffset(i, this->getFrequencyOffsetFromLabel(i));
+        };
 
         addAndMakeVisible(singleGainSliders[i]);
-        singleGainSliders[i].onValueChange = singleGainChanged;
+        singleGainSliders[i].onValueChange = [this, i]() {
+            this->synth.setGain(i, this->singleGainSliders[i].getValue());
+        };
     }
 
     synthMatrixHeader.setText("Synth Matrix", NotificationType::dontSendNotification);
@@ -100,7 +103,11 @@ void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFil
     // Duplicate into the other ear
     float* other = bufferToFill.buffer->getWritePointer(1, start);
     for (int i = 0; i < samples; i++) {
-        ptr[i] = 0; // TODO Remove this when done the basic GUI
+#ifdef NOSOUND
+        // Set both channels to zero
+        // This still performs the work to create sound and just doesn't play it.
+        ptr[i] = 0;
+#endif // NOSOUND
         other[i] = ptr[i];
     }
 
@@ -183,32 +190,26 @@ void MainComponent::resized()
     }
 }
 
-void MainComponent::matrixChanged() {
-    std::cout << "matChange" << std::endl;
-    Synth::Config conf = synth.getConfig();
+float MainComponent::getFrequencyMultFromLabel(Synth::OpRef op) {
+    std::string text = freqMultLabels[op].getText().toStdString();
 
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            conf.alpha[i][j] = alphaSliders[i][j].getValue();
-        }
+    try {
+        synth.setFreqMult(op, std::stof(text, nullptr));
+    } catch(std::invalid_argument e) {
+        freqMultLabels[op].setText(String(synth.getFreqMult(op)), NotificationType::dontSendNotification);
     }
 
-    synth.setConfig(conf);
+    return synth.getFreqMult(op);
 }
 
-void MainComponent::operatorSettingsChanged(Synth::OpRef op) {
-    std::cout << "opChange" << std::endl;
+float MainComponent::getFrequencyOffsetFromLabel(Synth::OpRef op) {
+    std::string text = freqOffsetLabels[op].getText().toStdString();
 
-    // TODO Check the labels, and reset them if they no longer convert to a number.
-}
-
-void MainComponent::singleGainChanged() {
-    std::cout << "gainChange" << std::endl;
-    Synth::Config conf = synth.getConfig();
-
-    for (int i = 0; i < 4; i++) {
-        conf.out[i] = singleGainSliders[i].getValue();
+    try {
+        synth.setFreqOffset(op, std::stof(text, nullptr));
+    } catch(std::invalid_argument e) {
+        freqOffsetLabels[op].setText(String(synth.getFreqOffset(op)), NotificationType::dontSendNotification);
     }
 
-    synth.setConfig(conf);
+    return synth.getFreqOffset(op);
 }

@@ -83,19 +83,56 @@ void Synth::callOperator(OpRef opNum,
     }
 }
 
-void Synth::SetOperatorConfig(OpRef op, const Operator::Options& config) {
-    // Direct copy-assignment
-    opConfigs[op] = config;
+/*
+ * Get and set the configuration for a single operator
+ */
+void Synth::setAmplitude(OpRef op, float amp) {
+    opConfigs[op].amplitude = amp;
 }
 
-Operator::Options Synth::getOperatorConfig(OpRef op) {
-    return opConfigs[op];
+float Synth::getAmplitude(OpRef op) {
+    return opConfigs[op].amplitude;
 }
 
-void Synth::setConfig(const Config& config) {
-    this->config  = config;
+void Synth::setFreqOffset(OpRef op, float offset) {
+    opConfigs[op].freq_offset = offset;
 }
 
-Synth::Config Synth::getConfig() {
-    return config;
+float Synth::getFreqOffset(OpRef op) {
+    return opConfigs[op].freq_offset;
+}
+
+void Synth::setFreqMult(OpRef op, float mult) {
+    opConfigs[op].freq_multiple = mult;
+}
+
+float Synth::getFreqMult(OpRef op) {
+    return opConfigs[op].freq_multiple;
+}
+
+/*
+ * Get and set the internal configuration
+ */
+void Synth::setAlpha(OpRef x, OpRef y, float alpha) {
+    config.alpha[x][y] = alpha;
+}
+
+float Synth::getAlpha(OpRef x, OpRef y) {
+    return config.alpha[x][y];
+}
+
+void Synth::setGain(OpRef op, float gain) {
+    config.out[op] = gain;
+}
+
+float Synth::getGain(OpRef op) {
+    return config.out[op];
+}
+
+void Synth::setFeedbackIterations(size_t iters) {
+    config.feedbackIterations = iters;
+}
+
+size_t Synth::getFeedbackIterations() {
+    return config.feedbackIterations;
 }
