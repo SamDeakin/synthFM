@@ -20,6 +20,8 @@ MainComponent::MainComponent() : time(0), synth()
         for (int j = 0; j < 4; j++) {
             alphaSliders[i][j].setColour(Slider::textBoxOutlineColourId, Colours::blue);
             addAndMakeVisible(alphaSliders[i][j]);
+            alphaSliders[i][j].setValue(synth.getAlpha(i, j));
+            alphaSliders[i][j].setRange(0, 2);
             alphaSliders[i][j].onValueChange = [this, i, j]() {
                 this->synth.setAlpha(i, j, this->alphaSliders[i][j].getValue());
             };
@@ -27,27 +29,31 @@ MainComponent::MainComponent() : time(0), synth()
 
         amplitudeSliders[i].setColour(Slider::textBoxOutlineColourId, Colours::teal);
         addAndMakeVisible(amplitudeSliders[i]);
+        amplitudeSliders[i].setValue(synth.getAmplitude(i));
+        amplitudeSliders[i].setRange(0, 10);
         amplitudeSliders[i].onValueChange = [this, i]() {
             this->synth.setAmplitude(i, this->amplitudeSliders[i].getValue());
         };
 
         freqMultLabels[i].setColour(Label::outlineColourId, Colours::blanchedalmond);
         freqMultLabels[i].setEditable(true);
-        freqMultLabels[i].setText("1.0", NotificationType::dontSendNotification);
         addAndMakeVisible(freqMultLabels[i]);
+        freqMultLabels[i].setText(String(synth.getFreqMult(i)), NotificationType::dontSendNotification);
         freqMultLabels[i].onTextChange = [this, i]() {
             this->synth.setFreqMult(i, this->getFrequencyMultFromLabel(i));
         };
 
         freqOffsetLabels[i].setColour(Label::outlineColourId, Colours::fuchsia);
         freqOffsetLabels[i].setEditable(true);
-        freqOffsetLabels[i].setText("0.0", NotificationType::dontSendNotification);
         addAndMakeVisible(freqOffsetLabels[i]);
+        freqOffsetLabels[i].setText(String(synth.getFreqOffset(i)), NotificationType::dontSendNotification);
         freqOffsetLabels[i].onTextChange = [this, i]() {
             this->synth.setFreqOffset(i, this->getFrequencyOffsetFromLabel(i));
         };
 
         addAndMakeVisible(singleGainSliders[i]);
+        singleGainSliders[i].setValue(synth.getGain(i));
+        singleGainSliders[i].setRange(0, 1.5);
         singleGainSliders[i].onValueChange = [this, i]() {
             this->synth.setGain(i, this->singleGainSliders[i].getValue());
         };

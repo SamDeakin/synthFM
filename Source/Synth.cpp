@@ -2,20 +2,27 @@
 #include "Synth.h"
 #include "Operator.h"
 
+#include <cmath>
+
 Synth::Synth() : ops{{opConfigs[0]}, {opConfigs[1]}, {opConfigs[2]}, {opConfigs[3]}} {
+    // Zero all config values
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             config.alpha[i][j] = 0;
         }
 
         config.out[i] = 0;
-    }
 
-    config.out[0] = 1.0;
+        opConfigs[i].amplitude = 1;
+        opConfigs[i].freq_multiple = 0;
+        opConfigs[i].freq_offset = 0;
+    }
+    config.feedbackIterations = 15;
+
+    // Set some sensible defaults
+    config.out[0] = 0.4;
     config.feedbackIterations = 20;
 
-    // Some basic defaults for operator 0
-    opConfigs[0].amplitude = 0.8;
     opConfigs[0].freq_multiple = 1.0;
     opConfigs[0].freq_offset = 0.0;
 }
@@ -48,11 +55,34 @@ void Synth::fill(float freq,
         callOperator(i, freq, start, samples, sampleDistance, modulation, intermediate[i]);
     }
 
-    // Mix outputs together
-    // TODO
-    // Just pass through op1 for now
-    for (size_t i = 0; i < samples; i++) {
-        out[i] = intermediate[0][i];
+    for (OpRef op = 0; op < 4; op++) {
+        if (config.out[op] == 0) {
+            continue;
+        }
+
+        // Find the absolute max
+        float max = 0;
+        for (size_t sample = 0; sample < samples; sample++) {
+            if (intermediate[op][sample] > max) {
+                max = intermediate[op][sample];
+            }
+            if (-intermediate[op][sample] > max) {
+                max = -intermediate[op][sample];
+            }
+        }
+
+        for (size_t sample = 0; sample < samples; sample++) {
+            // Rescale each intermediate value such that it will be within 0..gain
+            float val = intermediate[op][sample] / max * config.out[op];
+
+            // Take the exponent to add on a log scale
+            out[sample] += exp(val);
+        }
+    }
+
+    // The final step of taking the log of the result to get the final scaled value
+    for (size_t sample = 0; sample < samples; sample++) {
+        out[sample] = log(out[sample]);
     }
 }
 
