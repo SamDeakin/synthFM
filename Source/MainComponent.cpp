@@ -9,6 +9,7 @@
 #include "MainComponent.h"
 
 #include <iostream>
+#include <vector>
 
 //==============================================================================
 MainComponent::MainComponent() : time(0), synth()
@@ -106,17 +107,28 @@ void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFil
 
     float* ptr = bufferToFill.buffer->getWritePointer(0, start);
 
-    synth.fill(440.0, time, samples, inverseSampleRate, nullptr, ptr);
+    std::vector<float> frequencies;
+    keyboard.getFrequencies(frequencies);
 
-    // Duplicate into the other ear
-    float* other = bufferToFill.buffer->getWritePointer(1, start);
-    for (int i = 0; i < samples; i++) {
+    if (frequencies.size() > 0) {
+        // TODO we are just mixing the first frequency, which will be the lowest.
+        synth.fill(frequencies[0], time, samples, inverseSampleRate, nullptr, ptr);
+
+        // Duplicate into the other ear
+        float* other = bufferToFill.buffer->getWritePointer(1, start);
+        for (int i = 0; i < samples; i++) {
 #ifdef NOSOUND
-        // Set both channels to zero
-        // This still performs the work to create sound and just doesn't play it.
-        ptr[i] = 0;
+            // Set both channels to zero
+            // This still performs the work to create sound and just doesn't play it.
+            ptr[i] = 0;
 #endif // NOSOUND
-        other[i] = ptr[i];
+            other[i] = ptr[i];
+        }
+    } else {
+//        bufferToFill.clearActiveBufferRegion();
+        for (int i = 0; i < samples; i++) {
+            ptr[start + i] = 0;
+        }
     }
 
     time += bufferToFill.numSamples;
