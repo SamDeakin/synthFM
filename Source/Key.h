@@ -4,7 +4,7 @@
 
 #include <vector>
 
-class Key : public Button {
+class Key : public Button, public KeyListener {
 public:
     /*
      * The frequency may be changed later.
@@ -14,8 +14,13 @@ public:
     Key(float initialFrequency, bool keyColour);
     ~Key();
 
+    void addKey(KeyPress key);
+
     void paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) override;
     void resized() override;
+
+    bool keyPressed(const KeyPress &key, Component *originatingComponent) override;
+    bool keyStateChanged(bool isKeyDown, Component *originatingComponent) override;
 
     /*
      * Get this key's current frequency
@@ -25,4 +30,6 @@ public:
 private:
     float frequency;
     bool keyColour;
+
+    KeyPress listenedKey;
 };

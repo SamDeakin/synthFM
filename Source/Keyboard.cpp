@@ -1,15 +1,61 @@
 
 #include "Keyboard.h"
 
+#include <unordered_set>
+
+const std::unordered_set<char> listening = {
+    'a',
+    's',
+    'd',
+    'f',
+    'g',
+    'h',
+    'j',
+    'k',
+    'l',
+    ';',
+
+    'w',
+    'e',
+    't',
+    'y',
+    'u',
+    'o',
+    'p'
+};
+
 Keyboard::Keyboard() {
     for (int i = 0; i < WHITE_KEYS; i++) {
         whiteKeys[i] = new Key(INITIAL_WHITE_FREQUENCIES[i], true);
         addAndMakeVisible(whiteKeys[i]);
+        addKeyListener(whiteKeys[i]);
     }
     for (int i = 0; i < BLACK_KEYS; i++) {
         blackKeys[i] = new Key(INITIAL_BLACK_FREQUENCIES[i], false);
         addAndMakeVisible(blackKeys[i]);
+        addKeyListener(blackKeys[i]);
     }
+    whiteKeys[0]->addKey(KeyPress('a'));
+    whiteKeys[1]->addKey(KeyPress('s'));
+    whiteKeys[2]->addKey(KeyPress('d'));
+    whiteKeys[3]->addKey(KeyPress('f'));
+    whiteKeys[4]->addKey(KeyPress('g'));
+    whiteKeys[5]->addKey(KeyPress('h'));
+    whiteKeys[6]->addKey(KeyPress('j'));
+    whiteKeys[7]->addKey(KeyPress('k'));
+    whiteKeys[8]->addKey(KeyPress('l'));
+    whiteKeys[9]->addKey(KeyPress(';'));
+
+    blackKeys[0]->addKey(KeyPress('w'));
+    blackKeys[1]->addKey(KeyPress('e'));
+    blackKeys[2]->addKey(KeyPress('t'));
+    blackKeys[3]->addKey(KeyPress('y'));
+    blackKeys[4]->addKey(KeyPress('u'));
+    blackKeys[5]->addKey(KeyPress('o'));
+    blackKeys[6]->addKey(KeyPress('p'));
+
+    setWantsKeyboardFocus(true);
+    setMouseClickGrabsKeyboardFocus(true);
 }
 
 Keyboard::~Keyboard() {
@@ -46,6 +92,14 @@ void Keyboard::resized() {
     blackKeys[9]->setBounds(1300 - 35, area.getY(), 70, 250);
     blackKeys[10]->setBounds(1500 - 35, area.getY(), 70, 250);
     blackKeys[11]->setBounds(1600 - 35, area.getY(), 70, 250);
+}
+
+bool Keyboard::keyPressed(const KeyPress &key, Component *originatingComponent) {
+    return listening.count(key.getKeyCode()) > 0;
+}
+
+bool Keyboard::keyStateChanged(bool isKeyDown, Component *originatingComponent) {
+    return true;
 }
 
 void Keyboard::getFrequencies(std::vector<float>& out) {

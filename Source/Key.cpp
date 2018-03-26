@@ -5,6 +5,10 @@ Key::Key(float initialFrequency, bool keyColour) : Button("Key" + String(initial
 
 Key::~Key() {}
 
+void Key::addKey(KeyPress key) {
+    listenedKey = key;
+}
+
 void Key::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
     if (keyColour) {
         if (isButtonDown) {
@@ -27,6 +31,23 @@ void Key::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
 
 void Key::resized() {
     // Intentionally empty
+}
+
+bool Key::keyPressed(const KeyPress &key, Component *originatingComponent) {
+    if (key == listenedKey) {
+        return true;
+    }
+    return false;
+}
+
+bool Key::keyStateChanged(bool isKeyDown, Component *originatingComponent) {
+    if (KeyPress::isKeyCurrentlyDown(listenedKey.getKeyCode())) {
+        setState(ButtonState::buttonDown);
+    } else {
+        setState(ButtonState::buttonNormal);
+    }
+
+    return false;
 }
 
 float Key::getFrequency() {

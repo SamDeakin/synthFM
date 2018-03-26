@@ -42,7 +42,7 @@ const float INITIAL_BLACK_FREQUENCIES[] = {
     622.254
 };
 
-class Keyboard : public Component {
+class Keyboard : public Component, public KeyListener {
 public:
     Keyboard();
     ~Keyboard();
@@ -50,6 +50,10 @@ public:
     // For painting the children
     void paint(Graphics& g) override;
     void resized() override;
+
+    // For accepting key presses
+    bool keyPressed(const KeyPress &key, Component *originatingComponent) override;
+    bool keyStateChanged(bool isKeyDown, Component *originatingComponent) override;
 
     // Fills the vector with the frequencies that should be played currently
     void getFrequencies(std::vector<float>& out);

@@ -8,7 +8,6 @@
 
 #include "MainComponent.h"
 
-#include <iostream>
 #include <vector>
 
 //==============================================================================
@@ -73,6 +72,7 @@ MainComponent::MainComponent() : time(0), synth()
     addAndMakeVisible(singleGainHeader);
 
     addAndMakeVisible(keyboard);
+    addKeyListener(&keyboard);
 
     // Make sure you set the size of the component after
     // you add any child components.
@@ -125,10 +125,7 @@ void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFil
             other[i] = ptr[i];
         }
     } else {
-//        bufferToFill.clearActiveBufferRegion();
-        for (int i = 0; i < samples; i++) {
-            ptr[start + i] = 0;
-        }
+        bufferToFill.clearActiveBufferRegion();
     }
 
     time += bufferToFill.numSamples;
