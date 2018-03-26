@@ -71,9 +71,11 @@ MainComponent::MainComponent() : time(0), synth()
     singleGainHeader.setText("Operator Gain", NotificationType::dontSendNotification);
     addAndMakeVisible(singleGainHeader);
 
+    addAndMakeVisible(keyboard);
+
     // Make sure you set the size of the component after
     // you add any child components.
-    setSize (1600, 1000);
+    setSize (1700, 1000);
 
     // specify the number of input and output channels that we want to open
     setAudioChannels (0, 2);
@@ -132,7 +134,7 @@ void MainComponent::releaseResources()
 void MainComponent::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+    g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
 }
 
 void MainComponent::resized()
@@ -194,6 +196,8 @@ void MainComponent::resized()
             singleGainSliders[i].setBounds(gainArea.removeFromTop(50));
         }
     }
+
+    keyboard.setBounds(pianoRowArea);
 }
 
 float MainComponent::getFrequencyMultFromLabel(Synth::OpRef op) {

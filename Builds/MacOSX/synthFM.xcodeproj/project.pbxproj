@@ -24,6 +24,8 @@
 		7572A4D820645D5D001BB906 /* Operator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7572A4D720645D5D001BB906 /* Operator.cpp */; };
 		7572A4DA206463B1001BB906 /* Synth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7572A4D9206463B1001BB906 /* Synth.cpp */; };
 		7572A4DC206595D5001BB906 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 7572A4DB206595D5001BB906 /* .gitignore */; };
+		7572A4DF20695E8D001BB906 /* Keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7572A4DD20695E8D001BB906 /* Keyboard.cpp */; };
+		7572A4E82069614E001BB906 /* Key.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7572A4E62069614E001BB906 /* Key.cpp */; };
 		7A315D811BB67129EDB845AD /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFFF45284B48A9C4FC4597A /* Main.cpp */; };
 		84AC250EA49860DEBD5A5799 /* include_juce_opengl.mm in Sources */ = {isa = PBXBuildFile; fileRef = BF8E1D3862AB186083358F13 /* include_juce_opengl.mm */; };
 		854F1311A1D5A0C25466E904 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F247C6837D3EAEED40B2504F /* Carbon.framework */; };
@@ -74,6 +76,10 @@
 		7572A4D720645D5D001BB906 /* Operator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Operator.cpp; path = ../../Source/Operator.cpp; sourceTree = "<group>"; };
 		7572A4D9206463B1001BB906 /* Synth.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Synth.cpp; path = ../../Source/Synth.cpp; sourceTree = "<group>"; };
 		7572A4DB206595D5001BB906 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; name = .gitignore; path = ../../.gitignore; sourceTree = "<group>"; };
+		7572A4DD20695E8D001BB906 /* Keyboard.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Keyboard.cpp; path = ../../Source/Keyboard.cpp; sourceTree = "<group>"; };
+		7572A4DE20695E8D001BB906 /* Keyboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Keyboard.h; path = ../../Source/Keyboard.h; sourceTree = "<group>"; };
+		7572A4E62069614E001BB906 /* Key.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Key.cpp; path = ../../Source/Key.cpp; sourceTree = "<group>"; };
+		7572A4E72069614E001BB906 /* Key.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Key.h; path = ../../Source/Key.h; sourceTree = "<group>"; };
 		7CAFE1836B28839644D641D2 /* include_juce_events.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_events.mm; path = ../../JuceLibraryCode/include_juce_events.mm; sourceTree = SOURCE_ROOT; };
 		7D7C8EF8A3FD9E8EE8E1EDA9 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		7E415CCF898EC8D720D2C11B /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -152,6 +158,10 @@
 		540297D805F97652CEBD294C /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				7572A4E72069614E001BB906 /* Key.h */,
+				7572A4E62069614E001BB906 /* Key.cpp */,
+				7572A4DE20695E8D001BB906 /* Keyboard.h */,
+				7572A4DD20695E8D001BB906 /* Keyboard.cpp */,
 				4CFFF45284B48A9C4FC4597A /* Main.cpp */,
 				ECAC7A91664445B8E5C7E811 /* MainComponent.h */,
 				CC7CB452A063A6BA3818FDEA /* MainComponent.cpp */,
@@ -332,6 +342,7 @@
 				F61A2AE1F65605D7638C32F7 /* include_juce_audio_basics.mm in Sources */,
 				F75D29BE6E10481AA96A065F /* include_juce_audio_devices.mm in Sources */,
 				DDEF461F5AF7C196BDB587F6 /* include_juce_audio_formats.mm in Sources */,
+				7572A4DF20695E8D001BB906 /* Keyboard.cpp in Sources */,
 				FCC2B16C1E9D5356C3E34AA0 /* include_juce_audio_processors.mm in Sources */,
 				7032524D183868A14D5C0455 /* include_juce_audio_utils.mm in Sources */,
 				145765E55B8106C8F3F322EC /* include_juce_core.mm in Sources */,
@@ -343,6 +354,7 @@
 				A4D6925C47651099E8F91DC6 /* include_juce_graphics.mm in Sources */,
 				3D18EEF19C805C3861D83029 /* include_juce_gui_basics.mm in Sources */,
 				4CC40BE75BEC085F7A348C2B /* include_juce_gui_extra.mm in Sources */,
+				7572A4E82069614E001BB906 /* Key.cpp in Sources */,
 				84AC250EA49860DEBD5A5799 /* include_juce_opengl.mm in Sources */,
 				61ADA6A36EC0B2C934978253 /* include_juce_video.mm in Sources */,
 			);

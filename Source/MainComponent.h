@@ -11,6 +11,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "Synth.h"
+#include "Keyboard.h"
 
 //==============================================================================
 /*
@@ -84,7 +85,7 @@ private:
     // TODO Need label for header?
 
     // Piano gui elements
-    // TODO Unimplemented
+    Keyboard keyboard;
 
     // Buttons for selecting presets
     // TODO Unimplemented
