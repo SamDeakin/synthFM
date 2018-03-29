@@ -13,9 +13,6 @@
 //==============================================================================
 MainComponent::MainComponent() : time(0), synth()
 {
-    // TODO Get the current configs from synth and use them to set initial values
-    // for the labels.
-
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             alphaSliders[i][j].setColour(Slider::textBoxOutlineColourId, Colours::blue);
@@ -165,6 +162,7 @@ void MainComponent::paint (Graphics& g)
 
 void MainComponent::resized()
 {
+    // TODO Redo the UX to actually be good
     auto area = getLocalBounds();
 
     int graphRowHeight = 300;

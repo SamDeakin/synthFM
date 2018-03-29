@@ -24,35 +24,54 @@ const std::unordered_set<char> listening = {
     'p'
 };
 
+const char whiteHotKeys[] = {
+    'a',
+    's',
+    'd',
+    'f',
+    'g',
+    'h',
+    'j',
+    'k',
+    'l',
+    ';',
+    '\'',
+    'z',
+    'c',
+    'b',
+    'n',
+    ',',
+    '/'
+};
+
+const char blackHotKeys[] = {
+    'w',
+    'e',
+    't',
+    'y',
+    'u',
+    'o',
+    'p',
+    ']',
+    'x',
+    'v',
+    'm',
+    '.'
+};
+
 Keyboard::Keyboard() {
     for (int i = 0; i < WHITE_KEYS; i++) {
-        whiteKeys[i] = new Key(INITIAL_WHITE_FREQUENCIES[i], true);
+        whiteKeys[i] = new Key(INITIAL_WHITE_FREQUENCIES[i], true, whiteHotKeys[i]);
+        whiteKeys[i]->addKey(KeyPress(whiteHotKeys[i]));
         addAndMakeVisible(whiteKeys[i]);
         addKeyListener(whiteKeys[i]);
     }
     for (int i = 0; i < BLACK_KEYS; i++) {
-        blackKeys[i] = new Key(INITIAL_BLACK_FREQUENCIES[i], false);
+        blackKeys[i] = new Key(INITIAL_BLACK_FREQUENCIES[i], false, blackHotKeys[i]);
+        blackKeys[i]->addKey(KeyPress(blackHotKeys[i]));
         addAndMakeVisible(blackKeys[i]);
         addKeyListener(blackKeys[i]);
     }
-    whiteKeys[0]->addKey(KeyPress('a'));
-    whiteKeys[1]->addKey(KeyPress('s'));
-    whiteKeys[2]->addKey(KeyPress('d'));
-    whiteKeys[3]->addKey(KeyPress('f'));
-    whiteKeys[4]->addKey(KeyPress('g'));
-    whiteKeys[5]->addKey(KeyPress('h'));
-    whiteKeys[6]->addKey(KeyPress('j'));
-    whiteKeys[7]->addKey(KeyPress('k'));
-    whiteKeys[8]->addKey(KeyPress('l'));
-    whiteKeys[9]->addKey(KeyPress(';'));
-
-    blackKeys[0]->addKey(KeyPress('w'));
-    blackKeys[1]->addKey(KeyPress('e'));
-    blackKeys[2]->addKey(KeyPress('t'));
-    blackKeys[3]->addKey(KeyPress('y'));
-    blackKeys[4]->addKey(KeyPress('u'));
-    blackKeys[5]->addKey(KeyPress('o'));
-    blackKeys[6]->addKey(KeyPress('p'));
 
     setWantsKeyboardFocus(true);
     setMouseClickGrabsKeyboardFocus(true);

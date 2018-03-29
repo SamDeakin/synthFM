@@ -11,7 +11,7 @@ public:
      * The initial colour is whether this is a black or white key.
      * false for black, true for white.
      */
-    Key(float initialFrequency, bool keyColour);
+    Key(float initialFrequency, bool keyColour, char hotkey);
     ~Key();
 
     void addKey(KeyPress key);
@@ -28,8 +28,15 @@ public:
      */
     float getFrequency();
 private:
+    // Get the text of frequencyLabel and set frequency to it.
+    void setFrequency();
+
     float frequency;
     bool keyColour;
 
     KeyPress listenedKey;
+
+    // Labels to provide the user with more information
+    Label hotkeyLabel;
+    Label frequencyLabel;
 };

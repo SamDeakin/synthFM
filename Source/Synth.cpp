@@ -3,7 +3,6 @@
 #include "Operator.h"
 
 #include <cmath>
-#include <iostream> // TODO
 
 Synth::Synth() : sampleRate(0), ops{{opConfigs[0]}, {opConfigs[1]}, {opConfigs[2]}, {opConfigs[3]}} {
     // Zero all config values

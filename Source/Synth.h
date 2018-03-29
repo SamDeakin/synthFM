@@ -90,6 +90,9 @@ private:
 
         size_t feedbackIterations;
 
+        // TODO Add controls
+        float totalGain;
+
         // Scaling values to adjust the gain when mixing multiple voices
         // TODO Add controls for this
         float mixHeadroom;
@@ -99,6 +102,7 @@ private:
         bool holdNotes;
     } config;
 
+    // TODO Add gui elements for these
     struct Envelope {
         // The length of time the attack lasts for
         float attackLength;
