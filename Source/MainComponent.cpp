@@ -98,6 +98,8 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
     samplesPerBlock = samplesPerBlockExpected;
     this->sampleRate = sampleRate;
     inverseSampleRate = 1.0 / sampleRate;
+
+    synth.setSampleRate(sampleRate);
 }
 
 void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill)
@@ -110,22 +112,18 @@ void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFil
     std::vector<float> frequencies;
     keyboard.getFrequencies(frequencies);
 
-    if (frequencies.size() > 0) {
-        // TODO we are just mixing the first frequency, which will be the lowest.
-        synth.fill(frequencies[0], time, samples, inverseSampleRate, nullptr, ptr);
+    // Ask the synth to fill the buffer with sound
+    synth.fill(frequencies, time, samples, inverseSampleRate, nullptr, ptr);
 
-        // Duplicate into the other ear
-        float* other = bufferToFill.buffer->getWritePointer(1, start);
-        for (int i = 0; i < samples; i++) {
+    // Duplicate into the other ear
+    float* other = bufferToFill.buffer->getWritePointer(1, start);
+    for (int i = 0; i < samples; i++) {
 #ifdef NOSOUND
-            // Set both channels to zero
-            // This still performs the work to create sound and just doesn't play it.
-            ptr[i] = 0;
+        // Set both channels to zero
+        // This still performs the work to create sound and just doesn't play it.
+        ptr[i] = 0;
 #endif // NOSOUND
-            other[i] = ptr[i];
-        }
-    } else {
-        bufferToFill.clearActiveBufferRegion();
+        other[i] = ptr[i];
     }
 
     time += bufferToFill.numSamples;
