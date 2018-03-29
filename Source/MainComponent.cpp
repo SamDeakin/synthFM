@@ -80,6 +80,11 @@ MainComponent::MainComponent() : time(0), synth()
 
     // specify the number of input and output channels that we want to open
     setAudioChannels (0, 2);
+
+    ModifierKeys m = ModifierKeys::getCurrentModifiers();
+    octaveDown = m.isCtrlDown();
+    octaveUp = m.isAltDown();
+    synth.setHoldNotes(m.isShiftDown());
 }
 
 MainComponent::~MainComponent()
@@ -111,6 +116,20 @@ void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFil
 
     std::vector<float> frequencies;
     keyboard.getFrequencies(frequencies);
+
+    // Adjust frequencies an octave up or down
+    // Simple math
+    if (octaveDown) {
+        for (float& f : frequencies) {
+            f *= 0.5;
+        }
+    }
+    // Cancels out when both are on
+    if (octaveUp) {
+        for (float& f : frequencies) {
+            f *= 2.0;
+        }
+    }
 
     // Ask the synth to fill the buffer with sound
     synth.fill(frequencies, time, samples, inverseSampleRate, nullptr, ptr);
@@ -229,4 +248,20 @@ float MainComponent::getFrequencyOffsetFromLabel(Synth::OpRef op) {
     }
 
     return synth.getFreqOffset(op);
+}
+
+void MainComponent::modifierKeysChanged(const ModifierKeys& modifiers) {
+    synth.setHoldNotes(modifiers.isShiftDown());
+
+    if (modifiers.isCtrlDown()) {
+        octaveDown = true;
+    } else {
+        octaveDown = false;
+    }
+
+    if (modifiers.isAltDown()) {
+        octaveUp = true;
+    } else {
+        octaveUp = false;
+    }
 }

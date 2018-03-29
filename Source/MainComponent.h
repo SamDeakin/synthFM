@@ -34,6 +34,15 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
 
+    /*
+     * Detect the state of modifier keys.
+     *
+     * Shift: Hold all notes
+     * Ctrl: Shift frequency one octave down
+     * Alt: Shift frequency one octave up
+     */
+    void modifierKeysChanged(const ModifierKeys& modifiers) override;
+
 private:
     /*
      *
@@ -46,6 +55,9 @@ private:
 
     // 1 / sampleRate, for multiplication instead of division.
     float inverseSampleRate;
+
+    bool octaveDown;
+    bool octaveUp;
 
     /*
      * Used to keep track of time.

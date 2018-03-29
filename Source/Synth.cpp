@@ -21,7 +21,7 @@ Synth::Synth() : sampleRate(0), ops{{opConfigs[0]}, {opConfigs[1]}, {opConfigs[2
     config.feedbackIterations = 15;
 
     // Set some sensible defaults
-    config.out[0] = 0.4;
+    config.out[0] = 1.0;
     config.feedbackIterations = 20;
 
     config.opHeadroom = 3;
@@ -79,6 +79,13 @@ void Synth::fill(const std::vector<float>& frequencies,
         } else {
             // Insert as just starting
             currentlyPlaying[freq] = std::pair<size_t, size_t>(0, samples);
+        }
+    }
+
+    // If we are holding notes then update our current frequencies to all be held
+    if (config.holdNotes) {
+        for (auto& p : currentlyPlaying) {
+            p.second.second += samples;
         }
     }
 
@@ -280,6 +287,14 @@ void Synth::setFeedbackIterations(size_t iters) {
 
 size_t Synth::getFeedbackIterations() {
     return config.feedbackIterations;
+}
+
+void Synth::setHoldNotes(bool hold) {
+    config.holdNotes = hold;
+}
+
+bool Synth::getHoldNotes() {
+    return config.holdNotes;
 }
 
 void Synth::setAttackLength(float len, float sampleRate) {

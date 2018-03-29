@@ -51,6 +51,8 @@ public:
     float getGain(OpRef op);
     void setFeedbackIterations(size_t iters);
     size_t getFeedbackIterations();
+    void setHoldNotes(bool hold);
+    bool getHoldNotes();
 
     /*
      * Get and set the envelope configuration
@@ -92,6 +94,9 @@ private:
         // TODO Add controls for this
         float mixHeadroom;
         float opHeadroom;
+
+        // Whether or not notes should be continuously held
+        bool holdNotes;
     } config;
 
     struct Envelope {
