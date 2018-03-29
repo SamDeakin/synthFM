@@ -87,6 +87,11 @@ private:
         float out[4];
 
         size_t feedbackIterations;
+
+        // Scaling values to adjust the gain when mixing multiple voices
+        // TODO Add controls for this
+        float mixHeadroom;
+        float opHeadroom;
     } config;
 
     struct Envelope {

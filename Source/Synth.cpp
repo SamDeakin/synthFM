@@ -24,20 +24,23 @@ Synth::Synth() : sampleRate(0), ops{{opConfigs[0]}, {opConfigs[1]}, {opConfigs[2
     config.out[0] = 0.4;
     config.feedbackIterations = 20;
 
+    config.opHeadroom = 3;
+    config.mixHeadroom = 4;
+
     opConfigs[0].freq_multiple = 1.0;
     opConfigs[0].freq_offset = 0.0;
 
     envelope.attackLength = 0.3;
     envelope.intAttackLength = 2;
-    envelope.attackScale = 100.0;
+    envelope.attackScale = 10.0;
     envelope.maxValue = 1.0;
     envelope.decayLength = 0.1;
     envelope.intDecayLength = 2;
-    envelope.decayScale = 100.0;
+    envelope.decayScale = 10.0;
     envelope.sustainValue = 0.8;
     envelope.releaseLength = 1.0;
     envelope.intReleaseLength = 2;
-    envelope.releaseScale = 100.0;
+    envelope.releaseScale = 10.0;
 
     envelope.startValues = new float[envelope.intAttackLength + envelope.intDecayLength];
     for (int i = 0; i < envelope.intAttackLength + envelope.intDecayLength; i++) {
@@ -94,7 +97,7 @@ void Synth::fill(const std::vector<float>& frequencies,
         fillFrequency(freq, start, samples, sampleDistance, in, temp);
 
         for (size_t i = 0; i < samples; i++) {
-            out[i] += exp(applyEnvelope(temp[i], time, lastHeld));
+            out[i] += applyEnvelope(temp[i], time, lastHeld);
         }
 
         // Update time, and remove from currentlyPlaying if it has grown past the envelope
@@ -105,11 +108,9 @@ void Synth::fill(const std::vector<float>& frequencies,
         }
     }
 
-    // Log out before returning
+    // Scale by the headroom constant
     for (size_t i = 0; i < samples; i++) {
-        if (out[i]) {
-            out[i] = log(out[i]);
-        } // Else leave at 0
+        out[i] /= config.mixHeadroom;
     }
 }
 
@@ -180,16 +181,13 @@ void Synth::fillFrequency(float freq,
 
         for (size_t sample = 0; sample < samples; sample++) {
             // Rescale each intermediate value such that it will be within 0..gain
-            float val = intermediate[op][sample] / max * config.out[op];
-
-            // Take the exponent to add on a log scale
-            out[sample] += exp(val);
+            out[sample] += intermediate[op][sample] / max * config.out[op];;
         }
     }
 
-    // The final step of taking the log of the result to get the final scaled value
+    // Rescale the operators based on the headroom constant.
     for (size_t sample = 0; sample < samples; sample++) {
-        out[sample] = log(out[sample]);
+        out[sample] /= config.opHeadroom;
     }
 }
 
