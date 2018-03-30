@@ -2,6 +2,7 @@
 
 Key::Key(float initialFrequency, bool keyColour, char hotkey) : Button("Key" + String(initialFrequency)), frequency(initialFrequency), keyColour(keyColour) {
     hotkeyLabel.setText(String() + hotkey, NotificationType::dontSendNotification);
+    hotkeyLabel.setFont(Font("Helvetica Neue", "Light", 16));
     hotkeyLabel.setEditable(false);
     hotkeyLabel.setJustificationType(Justification::centred);
 //    hotkeyLabel.setWantsKeyboardFocus(false);
@@ -9,6 +10,7 @@ Key::Key(float initialFrequency, bool keyColour, char hotkey) : Button("Key" + S
     addAndMakeVisible(hotkeyLabel);
 
     frequencyLabel.setText(String(initialFrequency), NotificationType::dontSendNotification);
+    frequencyLabel.setFont(Font("Helvetica Neue", "Light", 16));
     frequencyLabel.setEditable(true);
     frequencyLabel.setJustificationType(Justification::centred);
     addAndMakeVisible(frequencyLabel);

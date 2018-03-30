@@ -61,6 +61,8 @@ public:
     float getAttackLength();
     void setAttackScale(float scale, float sampleRate);
     float getAttackScale();
+    void setMaxValue(float maxValue, float sampleRate);
+    float getMaxValue();
     void setDecayLength(float len, float sampleRate);
     float getDecayLength();
     void setDecayScale(float scale, float sampleRate);
@@ -70,7 +72,7 @@ public:
     void setReleaseLength(float len, float sampleRate);
     float getReleaseLength();
     void setReleaseScale(float scale, float sampleRate);
-    float getRelaseScale();
+    float getReleaseScale();
 private:
     float sampleRate;
 
@@ -90,9 +92,6 @@ private:
 
         size_t feedbackIterations;
 
-        // TODO Add controls
-        float totalGain;
-
         // Scaling values to adjust the gain when mixing multiple voices
         // TODO Add controls for this
         float mixHeadroom;
@@ -102,7 +101,6 @@ private:
         bool holdNotes;
     } config;
 
-    // TODO Add gui elements for these
     struct Envelope {
         // The length of time the attack lasts for
         float attackLength;

@@ -29,9 +29,9 @@ Synth::Synth() : sampleRate(0), ops{{opConfigs[0]}, {opConfigs[1]}, {opConfigs[2
     opConfigs[0].freq_multiple = 1.0;
     opConfigs[0].freq_offset = 0.0;
 
-    envelope.attackLength = 0.3;
+    envelope.attackLength = 0.1;
     envelope.intAttackLength = 2;
-    envelope.attackScale = 10.0;
+    envelope.attackScale = 100.0;
     envelope.maxValue = 1.0;
     envelope.decayLength = 0.1;
     envelope.intDecayLength = 2;
@@ -316,6 +316,16 @@ float Synth::getAttackScale() {
     return envelope.attackScale;
 }
 
+void Synth::setMaxValue(float maxValue, float sampleRate) {
+    Envelope e = envelope;
+    e.maxValue = maxValue;
+    regenEnvelope(e, sampleRate);
+}
+
+float Synth::getMaxValue() {
+    return envelope.maxValue;
+}
+
 void Synth::setDecayLength(float len, float sampleRate) {
     Envelope e = envelope;
     e.decayLength = len;
@@ -362,7 +372,7 @@ void Synth::setReleaseScale(float scale, float sampleRate) {
     regenEnvelope(e, sampleRate);
 }
 
-float Synth::getRelaseScale() {
+float Synth::getReleaseScale() {
     return envelope.releaseScale;
 }
 

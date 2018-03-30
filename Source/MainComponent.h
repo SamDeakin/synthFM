@@ -44,9 +44,10 @@ public:
     void modifierKeysChanged(const ModifierKeys& modifiers) override;
 
 private:
-    /*
-     *
-     */
+    // Lay out different parts of the ui
+    void layoutOperatorRow(Rectangle<int> bounds);
+    void layoutTopRow(Rectangle<int> bounds);
+
     float getFrequencyMultFromLabel(Synth::OpRef op);
     float getFrequencyOffsetFromLabel(Synth::OpRef op);
 
@@ -58,6 +59,9 @@ private:
 
     bool octaveDown;
     bool octaveUp;
+
+    // A final overall gain value applied outside of the synth
+    float finalGain;
 
     /*
      * Used to keep track of time.
@@ -84,17 +88,34 @@ private:
     Label freqOffsetLabels[4];
     Label freqHeader;
 
+    Label opNumber[4];
+
     Slider singleGainSliders[4];
     Label singleGainHeader;
 
     // Labels for adjusting the envelope
-    // TODO Unimplemented
+    Label envelopeLabel;
+    Label lengthLabel;
+    Label scaleLabel;
+    Label attackLabel;
+    Label attackLengthValue;
+    Label attackScaleValue;
+    Label peakLabel;
+    Slider peakValue; // TODO This should be a slider
+    Label decayLabel;
+    Label decayLengthValue;
+    Label decayScaleValue;
+    Label releaseLabel;
+    Label releaseLengthValue;
+    Label releaseScaleValue;
+    Label sustainLabel;
+    Slider sustainValue; // TODO This should be a slider
 
-    // Graph gui elements
+    float getEnvelopeValue(Label& valueLabel, float current);
 
     // Volume slider
     Slider gainSlider;
-    // TODO Need label for header?
+    Label gainLabel;
 
     // Piano gui elements
     Keyboard keyboard;
