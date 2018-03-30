@@ -204,6 +204,18 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
         synth.setReleaseScale(newValue, sampleRate);
     };
 
+    presetsLabel.setText("Presets", NotificationType::dontSendNotification);
+    presetsLabel.setFont(titleFont);
+    addAndMakeVisible(presetsLabel);
+    for (int i = 0; i < 6; i++) {
+        presetsButtons[i].setButtonText(String(i));
+        presetsButtons[i].setColour(TextButton::buttonColourId, Colours::darkgrey);
+        addAndMakeVisible(presetsButtons[i]);
+        presetsButtons[i].onClick = [this, i]() {
+            this->selectPreset(i);
+        };
+    }
+
     // Make sure you set the size of the component after
     // you add any child components.
     setSize (1700, 1000);
@@ -215,6 +227,7 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
     octaveDown = m.isCtrlDown();
     octaveUp = m.isAltDown();
     synth.setHoldNotes(m.isShiftDown());
+    addKeyListener(&keyboard);
 }
 
 MainComponent::~MainComponent()
@@ -442,7 +455,7 @@ void MainComponent::layoutTopRow(Rectangle<int> bounds) {
     
     // The envelope controls
     {
-        auto envelopeArea = bounds.removeFromLeft(900);
+        auto envelopeArea = bounds.removeFromLeft(645);
 
         int labelWidth = 70;
         int attackWidth = 100;
@@ -507,6 +520,33 @@ void MainComponent::layoutTopRow(Rectangle<int> bounds) {
         labelColumn.removeFromTop(rowGap);
         scaleLabel.setBounds(labelColumn.removeFromTop(dataHeight));
     }
+
+    bounds.removeFromLeft(elementHorizontalSpacing);
+
+    {
+        // The preset buttons
+        auto presetArea = bounds.removeFromLeft(165);
+        presetsLabel.setBounds(presetArea.removeFromTop(50));
+
+        int spacing = 15;
+        int buttonSize = 60;
+
+        auto presetRow1 = presetArea.removeFromLeft(buttonSize);
+        presetArea.removeFromLeft(spacing);
+        auto presetRow2 = presetArea.removeFromLeft(buttonSize);
+
+        presetsButtons[0].setBounds(presetRow1.removeFromTop(buttonSize));
+        presetRow1.removeFromTop(spacing);
+        presetsButtons[1].setBounds(presetRow1.removeFromTop(buttonSize));
+        presetRow1.removeFromTop(spacing);
+        presetsButtons[2].setBounds(presetRow1.removeFromTop(buttonSize));
+
+        presetsButtons[3].setBounds(presetRow2.removeFromTop(buttonSize));
+        presetRow2.removeFromTop(spacing);
+        presetsButtons[4].setBounds(presetRow2.removeFromTop(buttonSize));
+        presetRow2.removeFromTop(spacing);
+        presetsButtons[5].setBounds(presetRow2.removeFromTop(buttonSize));
+    }
 }
 
 float MainComponent::getFrequencyMultFromLabel(Synth::OpRef op) {
@@ -549,6 +589,18 @@ void MainComponent::modifierKeysChanged(const ModifierKeys& modifiers) {
     }
 }
 
+bool MainComponent::keyPressed(const KeyPress& key) {
+
+    if (isnumber(key.getKeyCode())) {
+        int num = key.getKeyCode() - '0';
+        if (num >= 0 && num <= 5) {
+            presetsButtons[num].triggerClick();
+            return true;
+        }
+    }
+    return false;
+}
+
 float MainComponent::getEnvelopeValue(Label& valueLabel, float current) {
     std::string text = valueLabel.getText().toStdString();
 
@@ -560,4 +612,8 @@ float MainComponent::getEnvelopeValue(Label& valueLabel, float current) {
     }
 
     return result;
+}
+
+void MainComponent::selectPreset(int presetNum) {
+    synth.selectPreset(presetNum);
 }

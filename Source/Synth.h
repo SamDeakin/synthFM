@@ -33,6 +33,11 @@ public:
               float* out);
 
     /*
+     * Change the operator configurations to match the preset number
+     */
+    void selectPreset(int presetNum);
+
+    /*
      * Get and set the configuration for a single operator
      */
     void setAmplitude(OpRef op, float amp);

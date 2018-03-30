@@ -43,6 +43,11 @@ public:
      */
     void modifierKeysChanged(const ModifierKeys& modifiers) override;
 
+    /*
+     * For detecting when a preset key is pressed
+     */
+    bool keyPressed(const KeyPress& key) override;
+
 private:
     // Lay out different parts of the ui
     void layoutOperatorRow(Rectangle<int> bounds);
@@ -121,7 +126,10 @@ private:
     Keyboard keyboard;
 
     // Buttons for selecting presets
-    // TODO Unimplemented
+    Label presetsLabel;
+    TextButton presetsButtons[6];
+
+    void selectPreset(int presetNum);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

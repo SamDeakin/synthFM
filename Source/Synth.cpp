@@ -3,6 +3,7 @@
 #include "Operator.h"
 
 #include <cmath>
+#include <iostream>
 
 Synth::Synth() : sampleRate(0), ops{{opConfigs[0]}, {opConfigs[1]}, {opConfigs[2]}, {opConfigs[3]}} {
     // Zero all config values
@@ -54,6 +55,10 @@ Synth::Synth() : sampleRate(0), ops{{opConfigs[0]}, {opConfigs[1]}, {opConfigs[2
 Synth::~Synth() {
     delete[] envelope.startValues;
     delete[] envelope.endValues;
+}
+
+void Synth::selectPreset(int presetNum) {
+    std::cout << "Preset: " << presetNum << std::endl;
 }
 
 void Synth::setSampleRate(float sampleRate) {
