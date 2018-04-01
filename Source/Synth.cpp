@@ -5,7 +5,7 @@
 #include <cmath>
 #include <iostream>
 
-Synth::Synth() : sampleRate(0), ops{{opConfigs[0]}, {opConfigs[1]}, {opConfigs[2]}, {opConfigs[3]}} {
+Synth::Synth() : sampleRate(0), ops{{opConfigs[0]}, {opConfigs[1]}, {opConfigs[2]}, {opConfigs[3]}}, presetManager(opConfigs, config.alpha) {
     // Zero all config values
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
@@ -58,7 +58,7 @@ Synth::~Synth() {
 }
 
 void Synth::selectPreset(int presetNum) {
-    std::cout << "Preset: " << presetNum << std::endl;
+    presetManager.setPreset(presetNum);
 }
 
 void Synth::setSampleRate(float sampleRate) {

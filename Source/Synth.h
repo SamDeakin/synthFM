@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Operator.h"
+#include "Presets.h"
 
 class Synth {
 public:
@@ -159,4 +160,6 @@ private:
                       float sampleDistance,
                       float* modulation,
                       float* out);
+
+    Presets presetManager;
 };

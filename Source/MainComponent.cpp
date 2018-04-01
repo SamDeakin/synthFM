@@ -208,7 +208,7 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
     presetsLabel.setFont(titleFont);
     addAndMakeVisible(presetsLabel);
     for (int i = 0; i < 6; i++) {
-        presetsButtons[i].setButtonText(String(i));
+        presetsButtons[i].setButtonText(String(i + 1));
         presetsButtons[i].setColour(TextButton::buttonColourId, Colours::darkgrey);
         addAndMakeVisible(presetsButtons[i]);
         presetsButtons[i].onClick = [this, i]() {
@@ -227,7 +227,6 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
     octaveDown = m.isCtrlDown();
     octaveUp = m.isAltDown();
     synth.setHoldNotes(m.isShiftDown());
-    addKeyListener(&keyboard);
 }
 
 MainComponent::~MainComponent()
@@ -593,8 +592,8 @@ bool MainComponent::keyPressed(const KeyPress& key) {
 
     if (isnumber(key.getKeyCode())) {
         int num = key.getKeyCode() - '0';
-        if (num >= 0 && num <= 5) {
-            presetsButtons[num].triggerClick();
+        if (num > 0 && num <= 6) {
+            presetsButtons[num - 1].triggerClick();
             return true;
         }
     }
@@ -616,4 +615,14 @@ float MainComponent::getEnvelopeValue(Label& valueLabel, float current) {
 
 void MainComponent::selectPreset(int presetNum) {
     synth.selectPreset(presetNum);
+
+    // Refresh all preset ui elements
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            alphaSliders[i][j].setValue(synth.getAlpha(i, j));
+        }
+        freqMultLabels[i].setText(String(synth.getFreqMult(i)), NotificationType::dontSendNotification);
+        freqOffsetLabels[i].setText(String(synth.getFreqOffset(i)), NotificationType::dontSendNotification);
+        amplitudeSliders[i].setValue(synth.getAmplitude(i));
+    }
 }

@@ -26,6 +26,7 @@
 		7572A4DC206595D5001BB906 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 7572A4DB206595D5001BB906 /* .gitignore */; };
 		7572A4DF20695E8D001BB906 /* Keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7572A4DD20695E8D001BB906 /* Keyboard.cpp */; };
 		7572A4E82069614E001BB906 /* Key.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7572A4E62069614E001BB906 /* Key.cpp */; };
+		75D6D2A7207176D000051334 /* Presets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 75D6D2A5207176D000051334 /* Presets.cpp */; };
 		7A315D811BB67129EDB845AD /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFFF45284B48A9C4FC4597A /* Main.cpp */; };
 		84AC250EA49860DEBD5A5799 /* include_juce_opengl.mm in Sources */ = {isa = PBXBuildFile; fileRef = BF8E1D3862AB186083358F13 /* include_juce_opengl.mm */; };
 		854F1311A1D5A0C25466E904 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F247C6837D3EAEED40B2504F /* Carbon.framework */; };
@@ -80,6 +81,8 @@
 		7572A4DE20695E8D001BB906 /* Keyboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Keyboard.h; path = ../../Source/Keyboard.h; sourceTree = "<group>"; };
 		7572A4E62069614E001BB906 /* Key.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Key.cpp; path = ../../Source/Key.cpp; sourceTree = "<group>"; };
 		7572A4E72069614E001BB906 /* Key.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Key.h; path = ../../Source/Key.h; sourceTree = "<group>"; };
+		75D6D2A5207176D000051334 /* Presets.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Presets.cpp; path = ../../Source/Presets.cpp; sourceTree = "<group>"; };
+		75D6D2A6207176D000051334 /* Presets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Presets.h; path = ../../Source/Presets.h; sourceTree = "<group>"; };
 		7CAFE1836B28839644D641D2 /* include_juce_events.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_events.mm; path = ../../JuceLibraryCode/include_juce_events.mm; sourceTree = SOURCE_ROOT; };
 		7D7C8EF8A3FD9E8EE8E1EDA9 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		7E415CCF898EC8D720D2C11B /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -167,6 +170,8 @@
 				CC7CB452A063A6BA3818FDEA /* MainComponent.cpp */,
 				7572A4D520644546001BB906 /* Operator.h */,
 				7572A4D720645D5D001BB906 /* Operator.cpp */,
+				75D6D2A6207176D000051334 /* Presets.h */,
+				75D6D2A5207176D000051334 /* Presets.cpp */,
 				7572A4D620644914001BB906 /* Synth.h */,
 				7572A4D9206463B1001BB906 /* Synth.cpp */,
 			);
@@ -345,6 +350,7 @@
 				7572A4DF20695E8D001BB906 /* Keyboard.cpp in Sources */,
 				FCC2B16C1E9D5356C3E34AA0 /* include_juce_audio_processors.mm in Sources */,
 				7032524D183868A14D5C0455 /* include_juce_audio_utils.mm in Sources */,
+				75D6D2A7207176D000051334 /* Presets.cpp in Sources */,
 				145765E55B8106C8F3F322EC /* include_juce_core.mm in Sources */,
 				7572A4DA206463B1001BB906 /* Synth.cpp in Sources */,
 				2795CB86607ED9713FDAD42A /* include_juce_cryptography.mm in Sources */,
