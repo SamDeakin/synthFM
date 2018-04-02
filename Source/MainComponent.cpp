@@ -36,7 +36,7 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             alphaSliders[i][j].setValue(synth.getAlpha(i, j));
-            alphaSliders[i][j].setRange(0, 10);
+            alphaSliders[i][j].setRange(0, 2);
             alphaSliders[i][j].setSliderStyle(Slider::SliderStyle::LinearBar);
             alphaSliders[i][j].onValueChange = [this, i, j]() {
                 this->synth.setAlpha(i, j, this->alphaSliders[i][j].getValue());

@@ -22,16 +22,16 @@ static const Operator::Options operatorPresets[6][4] = {
         Operator::Options{1, 0, 0.25}
     },
     {
-        Operator::Options{1, 0, 1},
+        Operator::Options{1, 0, 1}, // Fifths
         Operator::Options{1, 0, 3},
         Operator::Options{1, 0, 4},
         Operator::Options{1, 0, 6}
     },
     {
-        Operator::Options{1, 0, 1},
+        Operator::Options{1, 0, 1}, // Some bass
         Operator::Options{1, 0, 2},
-        Operator::Options{1, 0, 4},
-        Operator::Options{1, 0, 8}
+        Operator::Options{1, 0, 6},
+        Operator::Options{1, 0, 0}
     },
     {
         Operator::Options{1, 0, 1},
@@ -63,9 +63,10 @@ static const float alphaPresets[6][4][4] = {
         {0, 0, 0, 0}
     },
     {
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
+        // Fifths
+        {0, 0.5, 0, 0},
+        {0, 0, 0.5, 0},
+        {0, 0, 0, 0.5},
         {0, 0, 0, 0}
     },
     {
