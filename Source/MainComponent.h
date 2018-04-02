@@ -81,6 +81,7 @@ private:
     Synth synth;
 
     // Visual Components
+    Label titleLabel;
 
     // Labels for adjusting the synth settings
     Slider alphaSliders[4][4];

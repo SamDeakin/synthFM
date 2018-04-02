@@ -1,5 +1,10 @@
 #include "Key.h"
 
+extern Colour dark;
+extern Colour dark_accent;
+extern Colour light_accent;
+extern Colour light;
+
 Key::Key(float initialFrequency, bool keyColour, char hotkey) : Button("Key" + String(initialFrequency)), frequency(initialFrequency), keyColour(keyColour) {
     hotkeyLabel.setText(String() + hotkey, NotificationType::dontSendNotification);
     hotkeyLabel.setFont(Font("Helvetica Neue", "Light", 16));
@@ -19,11 +24,11 @@ Key::Key(float initialFrequency, bool keyColour, char hotkey) : Button("Key" + S
     };
 
     if (keyColour) {
-        hotkeyLabel.setColour(Label::textColourId, Colours::black);
-        frequencyLabel.setColour(Label::textColourId, Colours::black);
+        hotkeyLabel.setColour(Label::textColourId, dark);
+        frequencyLabel.setColour(Label::textColourId, dark);
     } else {
-        hotkeyLabel.setColour(Label::textColourId, Colours::white);
-        frequencyLabel.setColour(Label::textColourId, Colours::white);
+        hotkeyLabel.setColour(Label::textColourId, light);
+        frequencyLabel.setColour(Label::textColourId, light);
     }
 }
 
@@ -47,19 +52,19 @@ void Key::addKey(KeyPress key) {
 void Key::paintButton(Graphics &g, bool isMouseOverButton, bool isButtonDown) {
     if (keyColour) {
         if (isButtonDown) {
-            g.fillAll(Colours::lightgrey);
+            g.fillAll(light_accent);
         } else {
-            g.fillAll(Colours::white);
+            g.fillAll(light);
         }
-        g.setColour(Colours::black);
+        g.setColour(dark);
         g.drawRect(0, 0, 100, 400);
     } else {
         if (isButtonDown) {
-            g.fillAll(Colours::darkgrey);
+            g.fillAll(dark_accent);
         } else {
-            g.fillAll(Colours::black);
+            g.fillAll(dark);
         }
-        g.setColour(Colours::black);
+        g.setColour(dark);
         g.drawRect(0, 0, 70, 250);
     }
 }

@@ -3,27 +3,50 @@
 
 #include <vector>
 
+// TODO Credit artist
+extern const Colour light = Colour(0xFFFFFFFF);
+extern const Colour light_accent = Colour(0xFF9AE4E8);
+extern const Colour mid_accent = Colour(0xFFF02311);
+extern const Colour dark_accent = Colour(0xFF333333);
+extern const Colour dark = Colour(0xFF222222);
+
 //==============================================================================
 MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
 {
     Font titleFont = Font("Helvetica Neue", "Thin", 38);
     Font subtitleFont = Font("Helvetica Neue", "Light", 24);
     Font labelFont = Font("Helvetica Neue", "Light", 16);
-    LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypefaceName("Helvetica Neue");
+    LookAndFeel& feel = LookAndFeel::getDefaultLookAndFeel();
+    feel.setDefaultSansSerifTypefaceName("Helvetica Neue");
+    feel.setColour(Label::textColourId, light);
+    feel.setColour(Slider::textBoxTextColourId, light);
+    feel.setColour(Slider::textBoxOutlineColourId, mid_accent);
+    feel.setColour(Slider::trackColourId, dark_accent);
+    feel.setColour(TextButton::buttonColourId, dark);
+    feel.setColour(TextButton::buttonOnColourId, dark_accent);
+    feel.setColour(TextButton::textColourOffId, light);
+    feel.setColour(TextButton::textColourOnId, mid_accent);
+    feel.setColour(ComboBox::outlineColourId, light_accent);
+    feel.setColour(ComboBox::focusedOutlineColourId, mid_accent);
+
+    titleLabel.setText("synthFM", NotificationType::dontSendNotification);
+    titleLabel.setFont(Font("Helvetica Neue", "Thin", 100));
+    addAndMakeVisible(titleLabel);
 
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            alphaSliders[i][j].setColour(Slider::textBoxOutlineColourId, Colours::blue);
-            addAndMakeVisible(alphaSliders[i][j]);
             alphaSliders[i][j].setValue(synth.getAlpha(i, j));
             alphaSliders[i][j].setRange(0, 2);
             alphaSliders[i][j].setSliderStyle(Slider::SliderStyle::LinearBar);
             alphaSliders[i][j].onValueChange = [this, i, j]() {
                 this->synth.setAlpha(i, j, this->alphaSliders[i][j].getValue());
             };
+            if (i <= j) {
+                addAndMakeVisible(alphaSliders[i][j]);
+            }
         }
 
-        amplitudeSliders[i].setColour(Slider::textBoxOutlineColourId, Colours::teal);
+        amplitudeSliders[i].setColour(Slider::textBoxOutlineColourId, mid_accent);
         addAndMakeVisible(amplitudeSliders[i]);
         amplitudeSliders[i].setValue(synth.getAmplitude(i));
         amplitudeSliders[i].setRange(0, 10);
@@ -32,7 +55,7 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
             this->synth.setAmplitude(i, this->amplitudeSliders[i].getValue());
         };
 
-        freqMultLabels[i].setColour(Label::outlineColourId, Colours::blanchedalmond);
+        freqMultLabels[i].setColour(Label::outlineColourId, mid_accent);
         freqMultLabels[i].setFont(labelFont);
         freqMultLabels[i].setEditable(true);
         addAndMakeVisible(freqMultLabels[i]);
@@ -41,7 +64,7 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
             this->synth.setFreqMult(i, this->getFrequencyMultFromLabel(i));
         };
 
-        freqOffsetLabels[i].setColour(Label::outlineColourId, Colours::fuchsia);
+        freqOffsetLabels[i].setColour(Label::outlineColourId, mid_accent);
         freqOffsetLabels[i].setFont(labelFont);
         freqOffsetLabels[i].setEditable(true);
         addAndMakeVisible(freqOffsetLabels[i]);
@@ -131,7 +154,7 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
     attackLengthValue.setText(String(synth.getAttackLength()), NotificationType::dontSendNotification);
     attackLengthValue.setFont(labelFont);
     attackLengthValue.setEditable(true);
-    attackLengthValue.setColour(Label::outlineColourId, Colours::white);
+    attackLengthValue.setColour(Label::outlineColourId, mid_accent);
     addAndMakeVisible(attackLengthValue);
     attackLengthValue.onTextChange = [this]() {
         float newValue = getEnvelopeValue(attackLengthValue, synth.getAttackLength());
@@ -141,7 +164,7 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
     attackScaleValue.setText(String(synth.getAttackScale()), NotificationType::dontSendNotification);
     attackScaleValue.setFont(labelFont);
     attackScaleValue.setEditable(true);
-    attackScaleValue.setColour(Label::outlineColourId, Colours::white);
+    attackScaleValue.setColour(Label::outlineColourId, mid_accent);
     addAndMakeVisible(attackScaleValue);
     attackScaleValue.onTextChange = [this]() {
         float newValue = getEnvelopeValue(attackScaleValue, synth.getAttackScale());
@@ -150,7 +173,6 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
 
     peakValue.setValue(synth.getMaxValue());
     peakValue.setSliderStyle(Slider::SliderStyle::LinearBarVertical);
-    peakValue.setColour(Label::outlineColourId, Colours::white);
     addAndMakeVisible(peakValue);
     peakValue.onValueChange = [this]() {
         synth.setMaxValue(peakValue.getValue(), sampleRate);
@@ -159,7 +181,7 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
     decayLengthValue.setText(String(synth.getDecayLength()), NotificationType::dontSendNotification);
     decayLengthValue.setFont(labelFont);
     decayLengthValue.setEditable(true);
-    decayLengthValue.setColour(Label::outlineColourId, Colours::white);
+    decayLengthValue.setColour(Label::outlineColourId, mid_accent);
     addAndMakeVisible(decayLengthValue);
     decayLengthValue.onTextChange = [this]() {
         float newValue = getEnvelopeValue(decayLengthValue, synth.getDecayLength());
@@ -169,7 +191,7 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
     decayScaleValue.setText(String(synth.getDecayScale()), NotificationType::dontSendNotification);
     decayScaleValue.setFont(labelFont);
     decayScaleValue.setEditable(true);
-    decayScaleValue.setColour(Label::outlineColourId, Colours::white);
+    decayScaleValue.setColour(Label::outlineColourId, mid_accent);
     addAndMakeVisible(decayScaleValue);
     decayScaleValue.onTextChange = [this]() {
         float newValue = getEnvelopeValue(decayScaleValue, synth.getDecayScale());
@@ -178,7 +200,6 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
 
     sustainValue.setValue(synth.getSustainValue());
     sustainValue.setSliderStyle(Slider::SliderStyle::LinearBarVertical);
-    sustainValue.setColour(Label::outlineColourId, Colours::white);
     addAndMakeVisible(sustainValue);
     sustainValue.onValueChange = [this]() {
         synth.setSustainValue(sustainValue.getValue(), sampleRate);
@@ -187,7 +208,7 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
     releaseLengthValue.setText(String(synth.getReleaseLength()), NotificationType::dontSendNotification);
     releaseLengthValue.setFont(labelFont);
     releaseLengthValue.setEditable(true);
-    releaseLengthValue.setColour(Label::outlineColourId, Colours::white);
+    releaseLengthValue.setColour(Label::outlineColourId, mid_accent);
     addAndMakeVisible(releaseLengthValue);
     releaseLengthValue.onTextChange = [this]() {
         float newValue = getEnvelopeValue(releaseLengthValue, synth.getReleaseLength());
@@ -197,7 +218,7 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
     releaseScaleValue.setText(String(synth.getReleaseScale()), NotificationType::dontSendNotification);
     releaseScaleValue.setFont(labelFont);
     releaseScaleValue.setEditable(true);
-    releaseScaleValue.setColour(Label::outlineColourId, Colours::white);
+    releaseScaleValue.setColour(Label::outlineColourId, mid_accent);
     addAndMakeVisible(releaseScaleValue);
     releaseScaleValue.onTextChange = [this]() {
         float newValue = getEnvelopeValue(releaseScaleValue, synth.getReleaseScale());
@@ -209,7 +230,6 @@ MainComponent::MainComponent() : finalGain(1.0), time(0), synth()
     addAndMakeVisible(presetsLabel);
     for (int i = 0; i < 6; i++) {
         presetsButtons[i].setButtonText(String(i + 1));
-        presetsButtons[i].setColour(TextButton::buttonColourId, Colours::darkgrey);
         addAndMakeVisible(presetsButtons[i]);
         presetsButtons[i].onClick = [this, i]() {
             this->selectPreset(i);
@@ -312,7 +332,7 @@ void MainComponent::releaseResources()
 void MainComponent::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
+    g.fillAll(dark);
 }
 
 void MainComponent::resized()
@@ -545,6 +565,17 @@ void MainComponent::layoutTopRow(Rectangle<int> bounds) {
         presetsButtons[4].setBounds(presetRow2.removeFromTop(buttonSize));
         presetRow2.removeFromTop(spacing);
         presetsButtons[5].setBounds(presetRow2.removeFromTop(buttonSize));
+    }
+
+    bounds.removeFromLeft(elementHorizontalSpacing);
+
+    {
+        // Title label takes up the rest
+        int size = bounds.getHeight();
+        titleLabel.setBounds(bounds);
+        Font newFont = titleLabel.getFont();
+        newFont.setHeight(size);
+        titleLabel.setFont(newFont);
     }
 }
 
