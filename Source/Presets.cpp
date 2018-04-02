@@ -15,16 +15,17 @@ static const Operator::Options operatorPresets[6][4] = {
         Operator::Options{1, 0, 8}
     },
     {
+        // A "Spooky" preset with a lot of feedback
         Operator::Options{1, 0, 1},
-        Operator::Options{1, 0, 2},
-        Operator::Options{1, 0, 4},
-        Operator::Options{1, 0, 8}
+        Operator::Options{1, 0, 1}, // Tweak the output of this one too
+        Operator::Options{1, 0, 1.5},
+        Operator::Options{1, 0, 0.25}
     },
     {
         Operator::Options{1, 0, 1},
-        Operator::Options{1, 0, 2},
+        Operator::Options{1, 0, 3},
         Operator::Options{1, 0, 4},
-        Operator::Options{1, 0, 8}
+        Operator::Options{1, 0, 6}
     },
     {
         Operator::Options{1, 0, 1},
@@ -55,9 +56,10 @@ static const float alphaPresets[6][4][4] = {
         {0, 0, 0, 0.5}
     },
     {
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
+        // Spooky
+        {0, 1.12, 0, 0},
+        {0, 0, 1, 0},
+        {0, 0, 0, 0.45},
         {0, 0, 0, 0}
     },
     {

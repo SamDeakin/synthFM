@@ -210,6 +210,7 @@ void Synth::callOperator(OpRef opNum,
                          float* modulation,
                          float* out) {
     float in[samples];
+    float feedback[samples];
 
     size_t repeats = 1;
     // Our behavior is different if the operator has feedback
@@ -228,14 +229,21 @@ void Synth::callOperator(OpRef opNum,
         }
     }
 
+    for (size_t i = 0; i < samples; i++) {
+        feedback[i] = in[i];
+    }
+
     Operator& op = ops[opNum];
     for (size_t iteration = 0; iteration < repeats; iteration++) {
-        op.fill(freq, start, samples, sampleDistance, in, out);
-        if (iteration + 1 < repeats) {
+        if (iteration > 0) {
+            // Skip this modulation step on the first iteration
             for (int i = 0; i < samples; i++) {
-                in[i] = out[i];
+                // Copy out back into in for the next iteration
+                feedback[i] = config.alpha[opNum][opNum] * out[i] + in[i];
             }
         }
+
+        op.fill(freq, start, samples, sampleDistance, feedback, out);
     }
 }
 
