@@ -29,6 +29,12 @@ Synth::Synth() : sampleRate(0), ops{{opConfigs[0]}, {opConfigs[1]}, {opConfigs[2
 
     opConfigs[0].freq_multiple = 1.0;
     opConfigs[0].freq_offset = 0.0;
+    opConfigs[1].freq_multiple = 2.0;
+    opConfigs[1].freq_offset = 0.0;
+    opConfigs[2].freq_multiple = 4.0;
+    opConfigs[2].freq_offset = 0.0;
+    opConfigs[3].freq_multiple = 8.0;
+    opConfigs[3].freq_offset = 0.0;
 
     envelope.attackLength = 0.1;
     envelope.intAttackLength = 2;
